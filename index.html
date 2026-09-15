@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="es-CO">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Entrena con Marleny · Entrenamiento en casa</title>
+<meta name="description" content="Entrenamiento personalizado desde casa con Marleny. Rutinas por WhatsApp, seguimiento y clases en vivo.">
+<meta name="theme-color" content="#0E3A47">
+<!-- Vista previa al compartir el link por WhatsApp -->
+<meta property="og:title" content="Entrena con Marleny">
+<meta property="og:description" content="Arma tu plan en 3 toques y empieza a entrenar desde casa.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,500..800&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --rio:#0E3A47; --rio-2:#154B5B; --mango:#F2A93B; --guayaba:#E4576E;
+    --menta:#E6F2EE; --tinta:#14262C; --blanco:#FBFDFC; --gris:#5B6B70;
+    --display:"Bricolage Grotesque", system-ui, sans-serif;
+    --texto:"Atkinson Hyperlegible", system-ui, sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--texto);color:var(--tinta);background:var(--blanco);line-height:1.55;font-size:1.0625rem}
+  img{max-width:100%;display:block}
+  a{color:inherit}
+  :focus-visible{outline:3px solid var(--mango);outline-offset:3px;border-radius:4px}
+  .envoltura{width:min(1120px,100% - 2.5rem);margin-inline:auto}
+
+  /* Aviso solo para configurar */
+  .aviso-config{background:var(--guayaba);color:#fff;text-align:center;padding:.6rem 1rem;font-size:.9rem}
+  .aviso-config[hidden]{display:none}
+
+  /* ---------- HERO ---------- */
+  .hero{background:var(--rio);color:var(--blanco);padding:1.25rem 0 4rem;overflow:hidden;position:relative}
+  .barra{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:2.5rem}
+  .marca{font-family:var(--display);font-weight:800;font-size:1.25rem;font-stretch:85%;text-decoration:none}
+  .estado{display:flex;align-items:center;gap:.5rem;font-size:.9rem;color:#CFE3E0}
+  .punto{width:.6rem;height:.6rem;border-radius:50%;background:var(--gris)}
+  .punto.activo{background:#5FD38D;box-shadow:0 0 0 4px rgba(95,211,141,.2)}
+  .hero-grid{display:grid;gap:2.5rem;align-items:center}
+  @media(min-width:900px){.hero-grid{grid-template-columns:1.05fr .95fr;gap:4rem}}
+  .saludo{color:var(--mango);font-weight:700;margin-bottom:.75rem}
+  .hero h1{font-family:var(--display);font-weight:800;font-stretch:78%;font-size:clamp(2.6rem,7.5vw,5rem);line-height:.95;letter-spacing:-.01em;max-width:13ch}
+  .hero .bajada{margin-top:1.25rem;max-width:44ch;color:#D8E8E5;font-size:1.125rem}
+  .desde{margin-top:1.5rem;font-size:.95rem;color:#A9C6C2}
+
+  /* Quiz: el elemento protagonista */
+  .quiz{background:var(--blanco);color:var(--tinta);border-radius:22px;padding:1.75rem;position:relative;
+        box-shadow:12px 12px 0 var(--mango)}
+  @media(prefers-reduced-motion:no-preference){
+    .quiz{animation:entra .7s cubic-bezier(.2,.8,.2,1) .15s both}
+    @keyframes entra{from{transform:translateY(24px) rotate(1.5deg);opacity:0}to{transform:none;opacity:1}}
+  }
+  .quiz-cabeza{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;margin-bottom:1.25rem}
+  .quiz h2{font-family:var(--display);font-stretch:85%;font-size:1.5rem;line-height:1.1}
+  .progreso{font-size:.9rem;color:var(--gris);white-space:nowrap}
+  .barra-prog{height:6px;background:var(--menta);border-radius:6px;margin-bottom:1.5rem;overflow:hidden}
+  .barra-prog span{display:block;height:100%;width:0;background:var(--guayaba);transition:width .35s ease}
+  .pregunta{font-weight:700;font-size:1.15rem;margin-bottom:1rem}
+  .opciones{display:grid;gap:.6rem}
+  .opcion{font:inherit;text-align:left;background:var(--menta);border:2px solid transparent;color:var(--tinta);
+          padding:.9rem 1rem;border-radius:12px;cursor:pointer;display:flex;gap:.75rem;align-items:center}
+  .opcion:hover{border-color:var(--rio)}
+  .opcion .ico{font-size:1.35rem;width:1.8rem;text-align:center}
+  .opcion small{display:block;color:var(--gris);font-size:.88rem}
+  .atras{margin-top:1rem;background:none;border:0;font:inherit;color:var(--gris);cursor:pointer;text-decoration:underline}
+  .paso{display:none}
+  .paso.visible{display:block}
+  @media(prefers-reduced-motion:no-preference){.paso.visible{animation:aparece .3s ease}
+    @keyframes aparece{from{opacity:0;transform:translateX(10px)}to{opacity:1;transform:none}}}
+  .resultado .resultado-plan{font-family:var(--display);font-stretch:80%;font-weight:800;font-size:2rem;line-height:1;color:var(--rio);margin:.25rem 0 .75rem}
+  .resultado p{color:var(--gris);margin-bottom:1rem}
+  .campo{display:block;margin:1rem 0}
+  .campo span{display:block;font-weight:700;font-size:.95rem;margin-bottom:.35rem}
+  .campo input{width:100%;font:inherit;padding:.8rem 1rem;border-radius:10px;border:2px solid #C9D9D5;background:#fff}
+  .campo input:focus{border-color:var(--rio);outline:none}
+
+  .btn-wa{display:inline-flex;align-items:center;justify-content:center;gap:.6rem;width:100%;font:inherit;font-weight:700;
+          font-size:1.1rem;background:var(--mango);color:var(--tinta);border:0;border-radius:999px;padding:1rem 1.5rem;
+          cursor:pointer;text-decoration:none}
+  .btn-wa:hover{background:#F6BA5C}
+  .btn-wa svg{width:22px;height:22px;flex:none}
+
+  /* ---------- SECCIONES ---------- */
+  .seccion{padding:4.5rem 0}
+  .seccion h2{font-family:var(--display);font-weight:800;font-stretch:82%;font-size:clamp(2rem,4.5vw,3rem);line-height:1;max-width:18ch;margin-bottom:1rem}
+  .seccion .intro{max-width:56ch;color:var(--gris);margin-bottom:2.5rem}
+
+  /* Semana: muestra la variedad de entrenamientos */
+  .semana{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:.4rem}
+  @media(max-width:700px){.semana{grid-template-columns:1fr;gap:0;border-top:1px solid #D5E3DF}}
+  .dia{padding:1rem .75rem 1.25rem;border-radius:14px;background:var(--menta);min-height:170px;display:flex;flex-direction:column}
+  .dia .nombre-dia{font-size:.9rem;color:var(--gris);font-weight:700}
+  .dia .tipo{font-family:var(--display);font-stretch:85%;font-weight:700;font-size:1.2rem;line-height:1.05;margin:.4rem 0}
+  .dia .detalle{font-size:.88rem;color:var(--gris);margin-top:auto}
+  .dia.hoy{background:var(--rio);color:var(--blanco)}
+  .dia.hoy .nombre-dia,.dia.hoy .detalle{color:#BFD8D4}
+  .dia.hoy .nombre-dia::after{content:" · hoy";color:var(--mango)}
+  .dia.descanso{background:transparent;border:2px dashed #C3D5D0}
+  @media(max-width:700px){
+    .dia{min-height:0;border-radius:0;background:transparent;border:0;border-bottom:1px solid #D5E3DF;
+         display:grid;grid-template-columns:5rem 1fr;column-gap:1rem;padding:.9rem .25rem}
+    .dia .tipo{margin:0}
+    .dia .detalle{grid-column:2;margin:0}
+    .dia.descanso{border:0;border-bottom:1px solid #D5E3DF}
+    .dia.hoy{background:var(--rio);border-radius:12px;padding-inline:.75rem}
+  }
+  .nota-semana{margin-top:1rem;font-size:.95rem;color:var(--gris)}
+
+  /* Cómo funciona: sí es una secuencia */
+  .funciona{background:var(--menta)}
+  .pasos{list-style:none;display:grid;gap:2rem;counter-reset:paso}
+  @media(min-width:800px){.pasos{grid-template-columns:repeat(4,1fr)}}
+  .pasos li{counter-increment:paso;border-top:3px solid var(--rio);padding-top:1rem}
+  .pasos li::before{content:counter(paso);font-family:var(--display);font-weight:800;font-size:2.5rem;line-height:1;color:var(--guayaba);display:block;margin-bottom:.5rem}
+  .pasos h3{font-size:1.1rem;margin-bottom:.35rem}
+  .pasos p{color:var(--gris);font-size:.98rem}
+
+  /* Planes */
+  .planes{display:grid;gap:1.25rem}
+  @media(min-width:860px){.planes{grid-template-columns:repeat(3,1fr);align-items:start}}
+  .plan{border:2px solid #CFDDD9;border-radius:18px;padding:1.5rem;background:#fff}
+  .plan.destacado{border-color:var(--rio);background:var(--rio);color:var(--blanco)}
+  .plan .etiqueta{display:inline-block;background:var(--mango);color:var(--tinta);font-weight:700;font-size:.85rem;padding:.2rem .7rem;border-radius:999px;margin-bottom:.75rem}
+  .plan h3{font-family:var(--display);font-stretch:85%;font-size:1.6rem;line-height:1.05}
+  .plan .precio{font-family:var(--display);font-weight:800;font-size:2rem;margin:.75rem 0 .1rem}
+  .plan .precio small{font-family:var(--texto);font-weight:400;font-size:.95rem;opacity:.8}
+  .plan .precio.consulta{font-size:1.2rem;font-weight:700}
+  .plan ul{list-style:none;margin:1rem 0 1.5rem;display:grid;gap:.5rem}
+  .plan li{padding-left:1.5rem;position:relative}
+  .plan li::before{content:"";position:absolute;left:0;top:.55em;width:.7rem;height:.35rem;border-left:2px solid var(--guayaba);border-bottom:2px solid var(--guayaba);transform:rotate(-45deg)}
+  .plan.destacado li::before{border-color:var(--mango)}
+  .plan .btn-plan{display:block;text-align:center;font-weight:700;text-decoration:none;padding:.85rem;border-radius:999px;border:2px solid var(--rio);color:var(--rio)}
+  .plan.destacado .btn-plan{background:var(--mango);border-color:var(--mango);color:var(--tinta)}
+  .pagos{margin-top:1.5rem;color:var(--gris);font-size:.95rem}
+
+  /* Reto gratis */
+  .reto{background:var(--guayaba);color:#fff}
+  .reto-grid{display:grid;gap:2rem;align-items:center}
+  @media(min-width:860px){.reto-grid{grid-template-columns:1.2fr .8fr}}
+  .reto h2{max-width:16ch}
+  .reto p{max-width:48ch;font-size:1.1rem}
+  .reto .btn-wa{background:#fff;max-width:380px}
+  .reto .btn-wa:hover{background:var(--menta)}
+
+  /* Testimonios (solo aparece si hay testimonios reales en CONFIG) */
+  .testimonios{display:grid;gap:1.25rem}
+  @media(min-width:800px){.testimonios{grid-template-columns:repeat(2,1fr)}}
+  .testimonio{padding:1.5rem 0;border-top:2px solid var(--rio)}
+  .testimonio blockquote{font-size:1.15rem;line-height:1.5}
+  .testimonio figcaption{margin-top:.75rem;color:var(--gris);font-weight:700}
+
+  /* Preguntas */
+  .faq{max-width:760px}
+  .faq details{border-bottom:1px solid #D5E3DF;padding:1.1rem 0}
+  .faq summary{font-weight:700;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:1rem}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::after{content:"+";font-family:var(--display);font-size:1.5rem;line-height:1;color:var(--guayaba)}
+  .faq details[open] summary::after{content:"−"}
+  .faq details p{margin-top:.6rem;color:var(--gris);max-width:62ch}
+
+  footer{background:var(--tinta);color:#AFC2C1;padding:2.5rem 0 6rem;font-size:.92rem}
+  footer .marca{color:var(--blanco);display:block;margin-bottom:.35rem}
+
+  /* Botón flotante */
+  .flotante{position:fixed;right:1rem;bottom:1rem;z-index:10;display:flex;align-items:center;gap:.5rem;background:#25D366;color:#073B1E;
+            font-weight:700;text-decoration:none;padding:.85rem 1.1rem;border-radius:999px;box-shadow:0 6px 18px rgba(20,38,44,.3)}
+  .flotante svg{width:24px;height:24px}
+  @media(max-width:480px){.flotante .txt{display:none}.flotante{padding:.9rem}}
+</style>
+</head>
+<body>
+
+<div class="aviso-config" id="avisoConfig" hidden>
+  Falta poner el número de WhatsApp de Marleny en CONFIG (al final del archivo).
+</div>
+
+<header class="hero">
+  <div class="envoltura">
+    <div class="barra">
+      <a class="marca" href="#" id="marcaNombre">Entrena con Marleny</a>
+      <div class="estado" aria-live="polite"><span class="punto" id="punto"></span><span id="estadoTxt">Consultando horario…</span></div>
+    </div>
+
+    <div class="hero-grid">
+      <div>
+        <p class="saludo" id="saludo">Hola</p>
+        <h1>Entrena en casa con alguien que sí te hace seguimiento</h1>
+        <p class="bajada">Rutinas hechas para ti, videos de cada ejercicio y una entrenadora que te pregunta cómo te fue. Todo por WhatsApp, sin gimnasio y sin equipos caros.</p>
+        <p class="desde" id="desde"></p>
+      </div>
+
+      <!-- Quiz que convierte visitas en conversaciones de WhatsApp -->
+      <section class="quiz" aria-labelledby="quizTitulo">
+        <div class="quiz-cabeza">
+          <h2 id="quizTitulo">Arma tu plan en 3 toques</h2>
+          <span class="progreso" id="progresoTxt">Paso 1 de 3</span>
+        </div>
+        <div class="barra-prog" aria-hidden="true"><span id="progresoBarra"></span></div>
+
+        <div class="paso visible" data-paso="0">
+          <p class="pregunta">¿Qué quieres lograr?</p>
+          <div class="opciones">
+            <button class="opcion" data-valor="bajar de peso"><span class="ico">🔥</span><span>Bajar de peso</span></button>
+            <button class="opcion" data-valor="tonificar y ganar fuerza"><span class="ico">💪</span><span>Tonificar y ganar fuerza</span></button>
+            <button class="opcion" data-valor="tener más energía y salud"><span class="ico">⚡</span><span>Más energía y salud</span></button>
+            <button class="opcion" data-valor="moverme divirtiéndome"><span class="ico">💃</span><span>Moverme divirtiéndome</span></button>
+          </div>
+        </div>
+
+        <div class="paso" data-paso="1">
+          <p class="pregunta">¿Cómo estás hoy con el ejercicio?</p>
+          <div class="opciones">
+            <button class="opcion" data-valor="apenas estoy empezando"><span class="ico">🌱</span><span>Apenas empiezo<small>O llevo mucho tiempo sin entrenar</small></span></button>
+            <button class="opcion" data-valor="entreno de vez en cuando"><span class="ico">🚶</span><span>De vez en cuando<small>Me cuesta ser constante</small></span></button>
+            <button class="opcion" data-valor="ya entreno seguido"><span class="ico">🏃</span><span>Entreno seguido<small>Quiero subir de nivel</small></span></button>
+          </div>
+          <button class="atras" type="button">Volver</button>
+        </div>
+
+        <div class="paso" data-paso="2">
+          <p class="pregunta">¿Cuánto tiempo tienes al día?</p>
+          <div class="opciones">
+            <button class="opcion" data-valor="20 a 30 minutos"><span class="ico">⏱️</span><span>20 a 30 minutos</span></button>
+            <button class="opcion" data-valor="unos 45 minutos"><span class="ico">⏰</span><span>Unos 45 minutos</span></button>
+            <button class="opcion" data-valor="una hora o más"><span class="ico">🕐</span><span>Una hora o más</span></button>
+          </div>
+          <button class="atras" type="button">Volver</button>
+        </div>
+
+        <div class="paso resultado" data-paso="3" aria-live="polite">
+          <p>Te recomendamos</p>
+          <p class="resultado-plan" id="planRecomendado">—</p>
+          <p id="porQue"></p>
+          <label class="campo"><span>¿Cómo te llamas?</span>
+            <input id="nombreCliente" type="text" autocomplete="given-name" placeholder="Tu nombre">
+          </label>
+          <a class="btn-wa" id="btnResultado" href="#" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.3c0-.1-.2-.2-.5-.3Z"/></svg>
+            Enviar mi plan a Marleny
+          </a>
+          <button class="atras" type="button" id="reiniciar">Empezar de nuevo</button>
+        </div>
+      </section>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="seccion">
+    <div class="envoltura">
+      <h2>Una semana nunca se siente igual</h2>
+      <p class="intro">Marleny combina varios tipos de entrenamiento para que no te aburras y trabajes todo el cuerpo. Así se ve una semana típica; la tuya se ajusta a tu objetivo y tu nivel.</p>
+      <div class="semana" id="semana"></div>
+      <p class="nota-semana">Todo se puede hacer en la sala de tu casa, con tu propio peso o con botellas de agua como pesas.</p>
+    </div>
+  </section>
+
+  <section class="seccion funciona">
+    <div class="envoltura">
+      <h2>Así empiezas</h2>
+      <p class="intro">Sin formularios largos ni aplicaciones raras. Todo pasa en el WhatsApp que ya usas.</p>
+      <ol class="pasos">
+        <li><h3>Le escribes</h3><p>Le cuentas qué quieres lograr, o le envías el plan que armaste arriba.</p></li>
+        <li><h3>Te valora</h3><p>Te hace unas preguntas sobre tu salud, tu tiempo y tu nivel para no ponerte nada que no puedas hacer.</p></li>
+        <li><h3>Recibes tu rutina</h3><p>Cada semana te llega tu plan con videos cortos de cómo hacer cada ejercicio.</p></li>
+        <li><h3>Te acompaña</h3><p>Le cuentas cómo te fue, resuelve tus dudas y ajusta la rutina según tu avance.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="seccion" id="planes">
+    <div class="envoltura">
+      <h2>Escoge cómo quieres entrenar</h2>
+      <p class="intro">Todos los planes incluyen valoración inicial y rutinas adaptadas a ti.</p>
+      <div class="planes" id="listaPlanes"></div>
+      <p class="pagos" id="pagos"></p>
+    </div>
+  </section>
+
+  <section class="seccion reto">
+    <div class="envoltura reto-grid">
+      <div>
+        <h2>Prueba 7 días gratis antes de decidir</h2>
+        <p>Te enviamos un reto de una semana con rutinas cortas para que conozcas cómo entrena Marleny. Si te gusta, sigues con un plan. Si no, no pasa nada.</p>
+      </div>
+      <a class="btn-wa" id="btnReto" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Z"/></svg>
+        Quiero el reto gratis
+      </a>
+    </div>
+  </section>
+
+  <section class="seccion" id="seccionTestimonios" hidden>
+    <div class="envoltura">
+      <h2>Lo que dicen quienes ya entrenan con ella</h2>
+      <div class="testimonios" id="listaTestimonios"></div>
+    </div>
+  </section>
+
+  <section class="seccion funciona">
+    <div class="envoltura">
+      <h2>Preguntas frecuentes</h2>
+      <div class="faq">
+        <details><summary>¿Necesito comprar equipos?</summary><p>No. Las rutinas se diseñan con tu propio peso y cosas que tienes en casa. Si más adelante quieres comprar algo, como bandas elásticas, Marleny te orienta.</p></details>
+        <details><summary>Nunca he entrenado, ¿puedo empezar?</summary><p>Sí. La valoración inicial sirve justamente para arrancar a tu ritmo, sin riesgos y sin sentirte perdido.</p></details>
+        <details><summary>Tengo una lesión o una condición médica</summary><p>Cuéntaselo en la valoración. Marleny adapta los ejercicios y, si hace falta, te pedirá que consultes antes con tu médico.</p></details>
+        <details><summary>¿Y si no puedo entrenar algún día?</summary><p>La rutina se ajusta. Lo importante es la constancia durante el mes, no la perfección de cada día.</p></details>
+        <details><summary>¿Cómo pago?</summary><p id="faqPagos">Por transferencia. Marleny te envía los datos por WhatsApp.</p></details>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="envoltura">
+    <span class="marca" id="pieNombre">Entrena con Marleny</span>
+    <span id="pieTexto"></span>
+  </div>
+</footer>
+
+<a class="flotante" id="btnFlotante" href="#" target="_blank" rel="noopener" aria-label="Escribir a Marleny por WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm4.5 12.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.3c0-.1-.2-.2-.5-.3Z"/></svg>
+  <span class="txt">Escríbele</span>
+</a>
+
+<script>
+/* =========================================================
+   CONFIG — lo único que hay que editar
+   ========================================================= */
+const CONFIG = {
+  nombreMarca: "Entrena con Marleny",
+  // Número con indicativo 57, sin espacios ni +. Ej: "573001234567"
+  whatsapp: "573215049269",
+  ciudad: "Caucasia, Antioquia",
+  // Horario de respuesta en hora de Colombia (24 h)
+  horario: { inicio: 6, fin: 20 },
+  mediosPago: "Nequi, Daviplata o transferencia Bancolombia",
+
+  // Precio en texto. Si se deja vacío "", muestra "Pregunta por el valor".
+  planes: [
+    { id: "arranque", nombre: "Plan Arranque", precio: "", periodo: "al mes",
+      incluye: ["Valoración inicial por WhatsApp", "Rutina nueva cada semana", "Videos de cada ejercicio", "Resolución de dudas por chat"] },
+    { id: "acompanamiento", nombre: "Plan Acompañamiento", precio: "", periodo: "al mes", destacado: true, etiqueta: "El más escogido",
+      incluye: ["Todo lo del Plan Arranque", "Videollamada de valoración", "Seguimiento semanal de medidas y fotos", "Ajuste de rutina según tu avance", "Consejos de alimentación básica"] },
+    { id: "grupal", nombre: "Clases en vivo", precio: "", periodo: "al mes",
+      incluye: ["3 clases grupales en vivo por semana", "Baile, funcional y fuerza", "Grabación si no alcanzas a entrar", "Grupo de WhatsApp para motivarse"] }
+  ],
+
+  // Semana típica (lunes a domingo)
+  semana: [
+    { tipo: "Fuerza", detalle: "Piernas y glúteos" },
+    { tipo: "Cardio con música", detalle: "Quema y sudor" },
+    { tipo: "Funcional", detalle: "Cuerpo completo" },
+    { tipo: "Fuerza", detalle: "Brazos, espalda y abdomen" },
+    { tipo: "Baile y rumba", detalle: "Clase en vivo" },
+    { tipo: "Movilidad", detalle: "Estiramiento y postura" },
+    { tipo: "Descanso", detalle: "Tu cuerpo también se entrena descansando", descanso: true }
+  ],
+
+  // SOLO testimonios reales, con permiso de la persona.
+  // Mientras la lista esté vacía, la sección no aparece.
+  // Ejemplo: { texto: "Bajé 6 kilos en tres meses sin salir de mi casa.", autor: "Nombre A." }
+  testimonios: []
+};
+
+/* ========================================================= */
+const $ = (s) => document.querySelector(s);
+const numeroListo = /^57\d{10}$/.test(CONFIG.whatsapp);
+if (!numeroListo) $("#avisoConfig").hidden = false;
+
+const linkWA = (texto) => `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(texto)}`;
+
+// ---- Hora real de Colombia (America/Bogota) ----
+function horaBogota() {
+  const partes = new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/Bogota", hour: "numeric", hour12: false, weekday: "short"
+  }).formatToParts(new Date());
+  const hora = parseInt(partes.find(p => p.type === "hour").value, 10) % 24;
+  const mapaDias = { Mon: 0, Tue: 1, Wed: 2, Thu: 3, Fri: 4, Sat: 5, Sun: 6 };
+  return { hora, dia: mapaDias[partes.find(p => p.type === "weekday").value] };
+}
+const { hora, dia } = horaBogota();
+
+$("#saludo").textContent = hora < 12 ? "Buenos días" : hora < 19 ? "Buenas tardes" : "Buenas noches";
+const disponible = hora >= CONFIG.horario.inicio && hora < CONFIG.horario.fin;
+const fmtHora = (h) => `${((h + 11) % 12) + 1} ${h < 12 ? "a. m." : "p. m."}`;
+$("#punto").classList.toggle("activo", disponible);
+$("#estadoTxt").textContent = disponible
+  ? `Responde hoy hasta las ${fmtHora(CONFIG.horario.fin)}`
+  : `Te responde desde las ${fmtHora(CONFIG.horario.inicio)}`;
+
+// ---- Textos generales ----
+document.querySelectorAll("#marcaNombre, #pieNombre").forEach(el => el.textContent = CONFIG.nombreMarca);
+$("#desde").textContent = `Desde ${CONFIG.ciudad}, para toda Colombia.`;
+$("#pagos").textContent = `Pagos por ${CONFIG.mediosPago}.`;
+$("#faqPagos").textContent = `Por ${CONFIG.mediosPago}. Marleny te envía los datos por WhatsApp cuando escojas tu plan.`;
+$("#pieTexto").textContent = `Entrenamiento personalizado en casa · © ${new Intl.DateTimeFormat("es-CO", { timeZone: "America/Bogota", year: "numeric" }).format(new Date())}`;
+$("#btnFlotante").href = linkWA("Hola Marleny, vi tu página y quiero información para entrenar contigo.");
+$("#btnReto").href = linkWA("Hola Marleny, quiero el reto gratis de 7 días.");
+
+// ---- Semana ----
+const nombresDias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
+$("#semana").innerHTML = CONFIG.semana.map((d, i) => `
+  <div class="dia ${d.descanso ? "descanso" : ""} ${i === dia ? "hoy" : ""}">
+    <span class="nombre-dia">${nombresDias[i]}</span>
+    <span class="tipo">${d.tipo}</span>
+    <span class="detalle">${d.detalle}</span>
+  </div>`).join("");
+
+// ---- Planes ----
+$("#listaPlanes").innerHTML = CONFIG.planes.map(p => `
+  <article class="plan ${p.destacado ? "destacado" : ""}">
+    ${p.etiqueta ? `<span class="etiqueta">${p.etiqueta}</span>` : ""}
+    <h3>${p.nombre}</h3>
+    ${p.precio
+      ? `<p class="precio">${p.precio} <small>${p.periodo}</small></p>`
+      : `<p class="precio consulta">Pregunta por el valor</p>`}
+    <ul>${p.incluye.map(x => `<li>${x}</li>`).join("")}</ul>
+    <a class="btn-plan" target="_blank" rel="noopener"
+       href="${linkWA(`Hola Marleny, me interesa el ${p.nombre}. ¿Me das más información?`)}">Quiero este plan</a>
+  </article>`).join("");
+
+// ---- Testimonios (solo si hay reales) ----
+if (CONFIG.testimonios.length) {
+  $("#seccionTestimonios").hidden = false;
+  $("#listaTestimonios").innerHTML = CONFIG.testimonios.map(t => `
+    <figure class="testimonio"><blockquote>${t.texto}</blockquote><figcaption>${t.autor}</figcaption></figure>`).join("");
+}
+
+// ---- Quiz ----
+const respuestas = [];
+const pasos = document.querySelectorAll(".paso");
+let actual = 0;
+
+function mostrar(n) {
+  actual = n;
+  pasos.forEach(p => p.classList.toggle("visible", Number(p.dataset.paso) === n));
+  $("#progresoTxt").textContent = n < 3 ? `Paso ${n + 1} de 3` : "¡Listo!";
+  $("#progresoBarra").style.width = `${(n / 3) * 100}%`;
+  if (n === 3) calcularResultado();
+  const foco = pasos[n].querySelector("button, input");
+  if (foco && n > 0) foco.focus({ preventScroll: true });
+}
+
+function calcularResultado() {
+  const [objetivo, nivel, tiempo] = respuestas;
+  let id = "arranque";
+  if (objetivo === "moverme divirtiéndome") id = "grupal";
+  else if (nivel !== "ya entreno seguido" || objetivo === "bajar de peso") id = "acompanamiento";
+  const plan = CONFIG.planes.find(p => p.id === id) || CONFIG.planes[0];
+
+  const razones = {
+    arranque: "Ya tienes el hábito. Con rutinas nuevas cada semana vas a seguir avanzando sin estancarte.",
+    acompanamiento: nivel === "apenas estoy empezando"
+      ? "Al empezar, el seguimiento es lo que marca la diferencia: alguien pendiente de ti para que no abandones."
+      : "Para ver cambios reales ayuda medir tu avance cada semana y ajustar la rutina a tiempo.",
+    grupal: "Entrenar con música y en grupo hace que el ejercicio se sienta como plan y no como obligación."
+  };
+  $("#planRecomendado").textContent = plan.nombre;
+  $("#porQue").textContent = razones[id];
+
+  const actualizarLink = () => {
+    const nombre = $("#nombreCliente").value.trim();
+    const texto = `Hola Marleny${nombre ? `, soy ${nombre}` : ""}. Armé mi plan en tu página:\n` +
+      `• Quiero ${objetivo}\n• ${nivel.charAt(0).toUpperCase() + nivel.slice(1)}\n• Tengo ${tiempo} al día\n` +
+      `Me recomendaron el ${plan.nombre}. ¿Me cuentas cómo empezar?`;
+    $("#btnResultado").href = linkWA(texto);
+  };
+  $("#nombreCliente").oninput = actualizarLink;
+  actualizarLink();
+}
+
+document.querySelectorAll(".opcion").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const paso = Number(btn.closest(".paso").dataset.paso);
+    respuestas[paso] = btn.dataset.valor;
+    mostrar(paso + 1);
+  });
+});
+document.querySelectorAll(".paso .atras:not(#reiniciar)").forEach(b => b.addEventListener("click", () => mostrar(actual - 1)));
+$("#reiniciar").addEventListener("click", () => { respuestas.length = 0; $("#nombreCliente").value = ""; mostrar(0); });
+</script>
+</body>
+</html>
